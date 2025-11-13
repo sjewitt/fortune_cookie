@@ -1,5 +1,7 @@
 import 'dart:math'; // did this auto-import??
 import 'package:flutter/material.dart';
+import 'package:fortune_cookie/providers/fortune_model.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -101,7 +103,6 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             test,
             test,
-            // 5.10 - adding an image:
             Image.asset(
               "assets/images/snaggletooth.jpg",
               width: 80,
@@ -120,44 +121,76 @@ class _MyHomePageState extends State<MyHomePage> {
 
             // https://stackoverflow.com/questions/71997823/ctrl-dot-makes-e-appear-instead-of-showing-suggestions-in-vscode-on-gnome
             // It's 'Quick fix' from command pallette - offers - um - quick fixes (here, to wrap the widget in another widget)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                child: Text(_currFortune), // from setState instead.
-              ),
+            // for Consumer model:
+            // e.g.:
+            Consumer<FortuneModel>(
+              builder:
+                  (
+                    BuildContext context,
+                    FortuneModel fortuneModel,
+                    Widget? child,
+                  ) {
+                    return (Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(child: Text(fortuneModel.currentFortune)),
+                        ),
+                        Card(child: Text(fortuneModel.randomFortune)),
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              '${fortuneModel.counter}',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: fortuneModel.resetCounter,
+                          child: Text("Reset"),
+                        ),
+                      ],
+                    ));
+                  },
             ),
-            Card(
-              child: Text(_rndFortune), // from setState instead.
-            ),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  '$_counter',
-                  // can obviously use different styles here...
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-            ),
-            // 5.9: He's also adding an ElevatedButton:
-            ElevatedButton(onPressed: _resetCounter, child: Text("Reset")),
           ],
         ),
       ),
 
       persistentFooterButtons: <Widget>[
-        TextButton(
-          onPressed: _triggerSubtractMethods,
-          child: const Icon(Icons.remove),
+        // Add Consumer instance here
+        Consumer<FortuneModel>(
+          // is the Widget arg here optional? And if so, is the CONTAINED widget
+          builder: (BuildContext context, FortuneModel bibble, Widget? child) {
+            return Row(
+              children: [
+                TextButton(
+                  onPressed: bibble.triggerSubtractMethods,
+                  child: const Icon(Icons.remove),
+                ),
+                TextButton(
+                  onPressed: bibble.triggerAddMethods,
+                  child: const Icon(Icons.add),
+                ),
+              ],
+            );
+          },
         ),
-        TextButton(onPressed: _triggerAddMethods, child: const Icon(Icons.add)),
+        // TextButton(
+        //   onPressed: _triggerSubtractMethods,
+        //   child: const Icon(Icons.remove),
+        // ),
+        // TextButton(onPressed: _triggerAddMethods, child: const Icon(Icons.add)),
       ],
 
       // floatingActionButton property can accept other than FloatingActionButton:
+      // attach the notifier and renuild listener here, as per counter_model:
       floatingActionButton: Row(
         // possibly a badly named property?
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          // Add Consumer instance here
           FloatingActionButton(
             onPressed: _triggerSubtractMethods,
             tooltip: 'Decrement',
