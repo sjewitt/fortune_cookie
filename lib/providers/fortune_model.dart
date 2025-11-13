@@ -6,7 +6,13 @@ import 'package:flutter/material.dart';
 // - This use requires a Mixin class, but could use multiple `with` values.
 // https://www.geeksforgeeks.org/dart/dart-extends-vs-with-vs-implements/:
 class FortuneModel with ChangeNotifier {
-  // retrueve code from main.dart:
+  // retrieve code from main.dart:
+
+  // he uses a constructor to better initialise the local vars:
+  FortuneModel() {
+    _setRandomFortune();
+    _setSequentialFortune();
+  }
 
   int _counter = 0;
   String _currFortune = "UNOVERRIDDEN";
@@ -45,21 +51,22 @@ class FortuneModel with ChangeNotifier {
     // notifyListeners();
   }
 
-  void _triggerAddMethods() {
+  // the method names need to be modified to make them visible:
+  void triggerAddMethods() {
     _incrementCounter();
     _setSequentialFortune();
     _setRandomFortune();
     notifyListeners();
   }
 
-  void _triggerSubtractMethods() {
+  void triggerSubtractMethods() {
     _decrementCounter();
     _setSequentialFortune();
     _setRandomFortune();
     notifyListeners();
   }
 
-  void _resetCounter() {
+  void resetCounter() {
     _counter = 0;
     notifyListeners();
   }
