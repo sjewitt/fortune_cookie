@@ -1,5 +1,4 @@
 import 'dart:math'; // did this auto-import??
-
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,7 +8,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,111 +21,80 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// NOTE: `this` can be omitted if there is no ambiguity:
-// https://stackoverflow.com/questions/64324559/what-does-mean-of-using-the-this-keyword-in-dart
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
-
-  // this widget is the home of the application
 
   @override // and we override this function to set the State of this new Widget...
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // and THIS is where the stateful props for MyHomePage() are generated
-  //  - note that State is cast to type <MyHomePage>
-  // see https://www.tops-int.com/blog/mastering-stateless-and-stateful-widgets-in-flutter
+  Text test = const Text("I am a constant text!");
+  // int _counter = 0;
+  // String _currFortune = "UNOVERRIDDEN";
+  // String _rndFortune = "UNOVERRIDDEN";
 
-  // check reusibility of a const Text()
-  Text test = const Text("I am a constant text...");
+  // final _fortuneStrings = <String>[
+  //   "When its dark, put the cat out",
+  //   "Never eat yellow snow",
+  //   "Fuck the monks!",
+  //   "Fish for sardines",
+  //   "Ride your motorbike",
+  //   "Sausages for breakfast...",
+  //   "Sausages for tea...",
+  //   "Crivens!!",
+  // ];
 
-  // THESE are the stateful properties:
-  int _counter = 0;
+  // // can I do this?
+  // final rnd = Random();
 
-  // for ex #6, fortune cookie:
-  String _currFortune = "UNOVERRIDDEN";
+  // void _incrementCounter() {
+  //   setState(() {
+  //     _counter++;
+  //   });
+  // }
 
-  // for ex #6, fortune cookie:
-  String _rndFortune = "UNOVERRIDDEN";
+  // void _decrementCounter() {
+  //   setState(() {
+  //     _counter--;
+  //   });
+  // }
 
-  // use this in place of the button pushed message
-  // this is not stateful, but is needed in the setState() calls below.
-  final _fortuneStrings = <String>[
-    "When its dark, put the cat out",
-    "Never eat yellow snow",
-    "Fuck the monks!",
-    "Fish for sardines",
-    "Ride your motorbike",
-    "Sausages for breakfast...",
-    "Sausages for tea...",
-    "Crivens!!",
-  ];
+  // void _setSequentialFortune() {
+  //   setState(() {
+  //     _currFortune = _fortuneStrings[_counter % _fortuneStrings.length];
+  //   });
+  // }
 
-  // can I do this?
-  final rnd = Random();
+  // void _setRandomFortune() {
+  //   setState(() {
+  //     _rndFortune = _fortuneStrings[rnd.nextInt(_fortuneStrings.length)];
+  //   });
+  // }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  // void _triggerAddMethods() {
+  //   _incrementCounter();
+  //   _setSequentialFortune();
+  //   _setRandomFortune();
+  // }
 
-  void _decrementCounter() {
-    setState(() {
-      _counter--;
-    });
-  }
+  // void _triggerSubtractMethods() {
+  //   _decrementCounter();
+  //   _setSequentialFortune();
+  //   _setRandomFortune();
+  // }
 
-  void _setSequentialFortune() {
-    // 6.1: this updates a STATEFUL widget property. Aside: IF a given widget has the SAME property name,
-    // would this outer scope function update both independently?
-    // let's see...
-    setState(() {
-      _currFortune = _fortuneStrings[_counter % _fortuneStrings.length];
-    });
-  }
-
-  void _setRandomFortune() {
-    setState(() {
-      // see https://stackoverflow.com/questions/13318207/how-to-get-a-random-number-from-range-in-dart
-      _rndFortune = _fortuneStrings[rnd.nextInt(_fortuneStrings.length)];
-      print("New fortune: $_rndFortune");
-    });
-    // setState(() {
-    //   _rndFortune = "$_rndFortune XXX";
-    // });
-  }
-
-  void _triggerAddMethods() {
-    _incrementCounter();
-    _setSequentialFortune();
-    _setRandomFortune();
-  }
-
-  void _triggerSubtractMethods() {
-    _decrementCounter();
-    _setSequentialFortune();
-    _setRandomFortune();
-  }
-
-  void _resetCounter() {
-    setState(() {
-      _counter = 0;
-    });
-  }
+  // void _resetCounter() {
+  //   setState(() {
+  //     _counter = 0;
+  //   });
+  // }
 
   // the build method is called whenever a setState() is triggered, thus redrawing the widget
   @override
   Widget build(BuildContext context) {
-    print("rebuilding MyHomePage widget");
-    // `Scaffold` is the root of the display hierarchy
     return Scaffold(
-      appBar: AppBar(
-        // he removes this in # 5.9
-        // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // title: Text("Fortune Cookies!"),
-      ),
+      appBar: AppBar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -178,7 +145,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
 
-      // https://medium.com/codechai/drawer-and-persistent-footer-buttons-in-flutter-d406601fbfa7
       persistentFooterButtons: <Widget>[
         TextButton(
           onPressed: _triggerSubtractMethods,
@@ -187,12 +153,11 @@ class _MyHomePageState extends State<MyHomePage> {
         TextButton(onPressed: _triggerAddMethods, child: const Icon(Icons.add)),
       ],
 
-      // https://stackoverflow.com/questions/55166999/how-to-make-two-floating-action-buttons-in-flutter
       // floatingActionButton property can accept other than FloatingActionButton:
       floatingActionButton: Row(
+        // possibly a badly named property?
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // and HERE we can put FloatingActionButtons
           FloatingActionButton(
             onPressed: _triggerSubtractMethods,
             tooltip: 'Decrement',
@@ -205,7 +170,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      // Can only actually be ONE floatingActionButton property! Hence the above..
     );
   }
 }
